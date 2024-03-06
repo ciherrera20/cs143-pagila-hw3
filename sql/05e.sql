@@ -18,3 +18,19 @@
  * ```
  * This problem should be solved by a self join on the "film_category" table.
  */
+SELECT DISTINCT title
+FROM film
+JOIN film_category USING (film_id)
+WHERE (
+    SELECT count(*)
+    FROM (
+        SELECT category_id
+        FROM film_category
+        WHERE film_id = film.film_id
+        INTERSECT
+        SELECT category_id
+        FROM film_category
+        WHERE film_id = 21
+    ) AS common_categories
+) >= 2
+ORDER BY title;
